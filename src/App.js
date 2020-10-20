@@ -1,26 +1,71 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react'
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import 'tachyons'
+import Login from './components/Login'
+import { getUserInfo } from './api'
 
-function App() {
+function App () {
+  const [authToken, _setAuthToken] = useState(null)
+  const [userInfo, setUserInfo] = useState(null)
+  const setAuthToken = (token) => {
+    _setAuthToken(token)
+    if (token === null) {
+      window.localStorage.removeItem('authtoken')
+    } else {
+      window.localStorage.setItem('authtoken', token)
+    }
+  }
+
+  const isLoggedIn = authToken !== null
+
+  useEffect(() => {
+    const token = window.localStorage.getItem('authtoken')
+    if (token) {
+      _setAuthToken(token)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (authToken) {
+      getUserInfo(authToken)
+        .then(info => setUserInfo(info))
+    } else {
+      setUserInfo(null)
+    }
+  }, [authToken])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Router>
+      <div className='App'>
+        <header>
+          {
+            isLoggedIn
+              ? (
+                <div>
+                  Hi, {userInfo ? userInfo.name : 'user'}!{' '}
+                  <button onClick={() => {
+                    setAuthToken(null)
+                  }}
+                  >
+                    Log out
+                  </button>
+                </div>
+              )
+              : <div><Link to='/login'>Login</Link> or <Link to='/register'>Register</Link></div>
+          }
+
+        </header>
+        <Switch>
+          <Route path='/login'>
+            <Login onLogin={setAuthToken} />
+          </Route>
+          <Route path='/register'>
+            <p>Registration form</p>
+          </Route>
+        </Switch>
+      </div>
+    </Router>
+  )
 }
 
-export default App;
+export default App
