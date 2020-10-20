@@ -1,13 +1,17 @@
 import React, { useState } from 'react'
-import axios from 'axios'
+import { Redirect } from 'react-router-dom'
 import { login } from '../api'
 
 export default function Login (props) {
-  const { onLogin } = props
-
+  const { authToken, onLogin } = props
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState(null)
+
+  /* Precondition: cannot be on this page if logged in */
+  if (authToken) {
+    return <Redirect to='/' />
+  }
 
   function handleLogin (event) {
     event.preventDefault()

@@ -16,3 +16,12 @@ export function getUserInfo (token) {
   })
     .then(res => res.data)
 }
+
+export function getExampleData (token) {
+  return axios.get('http://127.0.0.1:8000/example/', {
+    headers: {
+      Authorization: 'Token ' + token
+    }
+  })
+    .then(res => res.data)
+}

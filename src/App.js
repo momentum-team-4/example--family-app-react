@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import 'tachyons'
 import Login from './components/Login'
+import Home from './components/Home'
 import { getUserInfo } from './api'
 
 function App () {
-  const [authToken, _setAuthToken] = useState(null)
+  const [authToken, _setAuthToken] = useState(window.localStorage.getItem('authtoken'))
   const [userInfo, setUserInfo] = useState(null)
   const setAuthToken = (token) => {
     _setAuthToken(token)
@@ -17,13 +18,6 @@ function App () {
   }
 
   const isLoggedIn = authToken !== null
-
-  useEffect(() => {
-    const token = window.localStorage.getItem('authtoken')
-    if (token) {
-      _setAuthToken(token)
-    }
-  }, [])
 
   useEffect(() => {
     if (authToken) {
@@ -57,10 +51,13 @@ function App () {
         </header>
         <Switch>
           <Route path='/login'>
-            <Login onLogin={setAuthToken} />
+            <Login authToken={authToken} onLogin={setAuthToken} />
           </Route>
           <Route path='/register'>
             <p>Registration form</p>
+          </Route>
+          <Route path='/'>
+            <Home authToken={authToken} />
           </Route>
         </Switch>
       </div>
