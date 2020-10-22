@@ -4,8 +4,17 @@ import 'tachyons'
 import Login from './components/Login'
 import Home from './components/Home'
 import { getUserInfo } from './api'
+import clsx from 'clsx'
+import NewPost from './components/NewPost'
 
 function App () {
+  /*
+  Responsible for:
+  - storing authToken
+  - storing userInfo
+  - showing header
+  - routing
+  */
   const [authToken, _setAuthToken] = useState(window.localStorage.getItem('authtoken'))
   const [userInfo, setUserInfo] = useState(null)
   const setAuthToken = (token) => {
@@ -31,7 +40,7 @@ function App () {
   return (
     <Router>
       <div className='App'>
-        <header>
+        <header className={clsx('pa2', { 'bg-washed-green': isLoggedIn, 'bg-washed-red': !isLoggedIn })}>
           {
             isLoggedIn
               ? (
@@ -43,6 +52,7 @@ function App () {
                   >
                     Log out
                   </button>
+                  <Link to='/new-post/'>Create new post</Link>
                 </div>
               )
               : <div><Link to='/login'>Login</Link> or <Link to='/register'>Register</Link></div>
@@ -55,6 +65,9 @@ function App () {
           </Route>
           <Route path='/register'>
             <p>Registration form</p>
+          </Route>
+          <Route path='/new-post/'>
+            <NewPost authToken={authToken} userInfo={userInfo || {}} />
           </Route>
           <Route path='/'>
             <Home authToken={authToken} />
