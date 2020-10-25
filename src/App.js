@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react'
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import 'tachyons'
-import Login from './components/Login'
-import Home from './components/Home'
 import { getUserInfo } from './api'
-import clsx from 'clsx'
+import Home from './components/Home'
+import Login from './components/Login'
+import NavBar from './components/NavBar'
 import NewPost from './components/NewPost'
+import Logout from './components/Logout'
 
 function App () {
   /*
   Responsible for:
   - storing authToken
   - storing userInfo
-  - showing header
   - routing
   */
   const [authToken, _setAuthToken] = useState(window.localStorage.getItem('authtoken'))
@@ -40,30 +40,15 @@ function App () {
   return (
     <Router>
       <div className='App'>
-        <header className={clsx('pa2', { 'bg-washed-green': isLoggedIn, 'bg-washed-red': !isLoggedIn })}>
-          {
-            isLoggedIn
-              ? (
-                <div>
-                  Hi, {userInfo ? userInfo.name : 'user'}!{' '}
-                  <button onClick={() => {
-                    setAuthToken(null)
-                  }}
-                  >
-                    Log out
-                  </button>
-                  <Link to='/new-post/'>Create new post</Link>
-                </div>
-              )
-              : <div><Link to='/login'>Login</Link> or <Link to='/register'>Register</Link></div>
-          }
-
-        </header>
+        <NavBar isLoggedIn={isLoggedIn} userInfo={userInfo} />
         <Switch>
-          <Route path='/login'>
+          <Route path='/login/'>
             <Login authToken={authToken} onLogin={setAuthToken} />
           </Route>
-          <Route path='/register'>
+          <Route path='/logout/'>
+            <Logout setAuthToken={setAuthToken} />
+          </Route>
+          <Route path='/register/'>
             <p>Registration form</p>
           </Route>
           <Route path='/new-post/'>
