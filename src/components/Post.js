@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { parse, format } from 'fecha'
 
 export default function Post ({ post }) {
@@ -28,4 +29,14 @@ export default function Post ({ post }) {
       )}
     </div>
   )
+}
+
+Post.propTypes = {
+  post: PropTypes.shape({
+    author: PropTypes.string.isRequired,
+    circle: PropTypes.shape({ name: PropTypes.string.isRequired }).isRequired,
+    body: PropTypes.string.isRequired,
+    image: PropTypes.string,
+    posted_at: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]).isRequired
+  }).isRequired
 }

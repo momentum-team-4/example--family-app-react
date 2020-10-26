@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react'
+import PropTypes from 'prop-types'
 import { Redirect } from 'react-router-dom'
 import { createPost, getCircles, useRemoteData, addImageToPost } from '../api'
 import { Button, FieldContainer } from './Forms'
@@ -109,4 +110,11 @@ export default function NewPost (props) {
       </form>
     </div>
   )
+}
+
+NewPost.propTypes = {
+  authToken: PropTypes.string.isRequired,
+  userInfo: PropTypes.shape({
+    name: PropTypes.string
+  })
 }

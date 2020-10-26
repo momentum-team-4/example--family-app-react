@@ -42,6 +42,7 @@ function App () {
     <Router>
       <div className='App'>
         <NavBar isLoggedIn={isLoggedIn} userInfo={userInfo} />
+
         <Switch>
           <Route path='/login/'>
             <Login authToken={authToken} onLogin={setAuthToken} />

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
 import Posts from './Posts'
 
 export default function Home (props) {
@@ -10,4 +10,8 @@ export default function Home (props) {
       <Posts authToken={authToken} />
     </div>
   )
+}
+
+Home.propTypes = {
+  authToken: PropTypes.string.isRequired
 }

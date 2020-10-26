@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { getPosts, useRemoteData } from '../api'
 import Post from './Post'
 
@@ -48,4 +49,8 @@ export default function Posts (props) {
       ))}
     </div>
   )
+}
+
+Posts.propTypes = {
+  authToken: PropTypes.string.isRequired
 }

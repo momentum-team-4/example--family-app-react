@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import { createCircle, getCircles, useRemoteData } from '../api'
 import { Button, FieldContainer } from './Forms'
 
@@ -39,7 +40,7 @@ export default function CircleList (props) {
     <div className='CircleList'>
       <div className='pb3'>
         {circles.map(circle => (
-          <div key={circle.id} className='ba bw1 pa2 mb2'>
+          <div key={circle.url} className='ba bw1 pa2 mb2'>
             <div className='f3 b mb2'>{circle.name}</div>
             <div>{circle.members.join(', ')}</div>
           </div>
@@ -49,7 +50,7 @@ export default function CircleList (props) {
       <form onSubmit={handleSubmit}>
         <h2 className='f2 b'>Create a new circle</h2>
         <FieldContainer>
-          <label for='circle-name'>Name</label>
+          <label htmlFor='circle-name'>Name</label>
           <input type='text' className='w-100 pa2' id='circle-name' value={name} onChange={e => setName(e.target.value)} />
         </FieldContainer>
         <FieldContainer>
@@ -58,4 +59,8 @@ export default function CircleList (props) {
       </form>
     </div>
   )
+}
+
+CircleList.propTypes = {
+  authToken: PropTypes.string.isRequired
 }

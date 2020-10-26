@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import { Redirect } from 'react-router-dom'
 import { login } from '../api'
 
@@ -63,4 +64,9 @@ export default function Login (props) {
       </form>
     </div>
   )
+}
+
+Login.propTypes = {
+  authToken: PropTypes.string.isRequired,
+  onLogin: PropTypes.func.isRequired
 }
