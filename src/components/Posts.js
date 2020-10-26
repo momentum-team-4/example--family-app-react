@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { getPosts, useRemoteData } from '../api'
 import Post from './Post'
 
@@ -11,6 +10,23 @@ export default function Posts (props) {
   */
 
   const { authToken } = props
+
+  // const [posts, setPosts] = useState(null)
+  // const [postsErr, setPostsErr] = useState(null)
+  // const [postsLoading, setPostsLoading] = useState(true)
+
+  // useEffect(() => {
+  //   setPostsLoading(true)
+  //   getPosts(authToken)
+  //     .then(posts => {
+  //       setPosts(posts)
+  //       setPostsLoading(false)
+  //     })
+  //     .catch(error => {
+  //       setPostsErr(error)
+  //       setPostsLoading(false)
+  //     })
+  // }, [authToken])
 
   const [posts, postsErr, postsLoading] = useRemoteData(
     () => getPosts(authToken),

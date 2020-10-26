@@ -18,7 +18,9 @@ export default function CircleList (props) {
     }
   )
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault()
+
     createCircle(authToken, name).then(() => {
       setName('')
       reloadCircles()

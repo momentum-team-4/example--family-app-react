@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Redirect } from 'react-router-dom'
-import { createPost, getCircles, useRemoteData } from '../api'
+import { createPost, getCircles, useRemoteData, addImageToPost } from '../api'
 import { Button, FieldContainer } from './Forms'
 import Post from './Post'
 
@@ -19,14 +19,18 @@ export default function NewPost (props) {
       dependencies: [authToken]
     })
   const [postCreated, setPostCreated] = useState(false)
+  const imageInput = useRef(null)
 
   function handleSubmit (event) {
     event.preventDefault()
-
+    const file = imageInput.current.files[0]
     createPost(authToken, body, circleUrl)
-      .then(data => {
-        setPostCreated(true)
+      .then(postData => {
+        if (file) {
+          return addImageToPost(authToken, postData.url, file)
+        }
       })
+      .then(() => setPostCreated(true))
   }
 
   if (circlesLoading) {
@@ -85,11 +89,16 @@ export default function NewPost (props) {
           Post body:
           </label>
           <textarea
+            required
             className='w-100 pa2'
             id='body'
             value={body}
             onChange={e => setBody(e.target.value)}
           />
+        </FieldContainer>
+        <FieldContainer>
+          <label htmlFor='image'>Post image:</label>
+          <input ref={imageInput} type='file' id='image' />
         </FieldContainer>
         <FieldContainer>
           <Button classes='hover-bg-washed-blue' type='submit'>

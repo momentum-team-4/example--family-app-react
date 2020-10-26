@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 
-export function useRemoteData (apiPromise, config = {}) {
+export function useRemoteData (apiPromiseFn, config = {}) {
   let { dependencies, initialData } = config
   if (dependencies === undefined) {
     dependencies = []
@@ -12,7 +12,7 @@ export function useRemoteData (apiPromise, config = {}) {
   const [loading, setLoading] = useState(true)
   const loadingFn = () => {
     setLoading(true)
-    apiPromise()
+    apiPromiseFn()
       .then(data => {
         setData(data)
         setLoading(false)
@@ -86,6 +86,16 @@ export function createCircle (token, name) {
   }, {
     headers: {
       Authorization: 'Token ' + token
+    }
+  }).then(res => res.data)
+}
+
+export function addImageToPost (token, postUrl, image) {
+  return axios.put(postUrl + 'image/', image, {
+    headers: {
+      Authorization: 'Token ' + token,
+      'Content-Type': image.type,
+      'Content-Disposition': `attachment; filename=${image.name}`
     }
   }).then(res => res.data)
 }

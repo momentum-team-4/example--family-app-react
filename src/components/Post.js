@@ -21,6 +21,11 @@ export default function Post ({ post }) {
         <i>{post.circle.name}</i>
       </div>
       <div className='mv2'>{post.body}</div>
+      {post.image && (
+        <div className='mv2'>
+          <img src={post.image} />
+        </div>
+      )}
     </div>
   )
 }
