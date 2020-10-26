@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import 'tachyons'
-import { getUserInfo } from './api'
+import { getUserInfo, useRemoteData } from './api'
 import Home from './components/Home'
 import Login from './components/Login'
+import Logout from './components/Logout'
 import NavBar from './components/NavBar'
 import NewPost from './components/NewPost'
-import Logout from './components/Logout'
 
 function App () {
   /*
@@ -16,7 +16,6 @@ function App () {
   - routing
   */
   const [authToken, _setAuthToken] = useState(window.localStorage.getItem('authtoken'))
-  const [userInfo, setUserInfo] = useState(null)
   const setAuthToken = (token) => {
     _setAuthToken(token)
     if (token === null) {
@@ -28,14 +27,15 @@ function App () {
 
   const isLoggedIn = authToken !== null
 
-  useEffect(() => {
+  const [userInfo] = useRemoteData(() => {
     if (authToken) {
-      getUserInfo(authToken)
-        .then(info => setUserInfo(info))
+      return getUserInfo(authToken)
     } else {
-      setUserInfo(null)
+      return new Promise((resolve) => resolve(null))
     }
-  }, [authToken])
+  }, {
+    dependencies: [authToken]
+  })
 
   return (
     <Router>

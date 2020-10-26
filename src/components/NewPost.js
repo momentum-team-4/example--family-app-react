@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import Post from './Post'
-import { createPost, getCircles } from '../api'
+import React, { useState } from 'react'
 import { Redirect } from 'react-router-dom'
+import { createPost, getCircles, useRemoteData } from '../api'
+import { Button, FieldContainer } from './Forms'
+import Post from './Post'
 
 export default function NewPost (props) {
   /*
@@ -12,16 +13,12 @@ export default function NewPost (props) {
 
   const [body, setBody] = useState('')
   const [circleUrl, setCircleUrl] = useState('')
-  const [loading, setLoading] = useState(true)
-  const [circles, setCircles] = useState(null)
-  const [postCreated, setPostCreated] = useState(false)
-
-  useEffect(() => {
-    getCircles(authToken).then(circles => {
-      setCircles(circles)
-      setLoading(false)
+  const [circles, circlesErr, circlesLoading] = useRemoteData(
+    () => getCircles(authToken),
+    {
+      dependencies: [authToken]
     })
-  }, [authToken])
+  const [postCreated, setPostCreated] = useState(false)
 
   function handleSubmit (event) {
     event.preventDefault()
@@ -32,8 +29,12 @@ export default function NewPost (props) {
       })
   }
 
-  if (loading) {
+  if (circlesLoading) {
     return <div>Loading...</div>
+  }
+
+  if (circlesErr) {
+    return <div>There was an error loading your circles.</div>
   }
 
   if (postCreated) {
@@ -57,17 +58,18 @@ export default function NewPost (props) {
           url: circleUrl,
           name: circleName
         },
-        posted_at: '2020-01-01'
+        posted_at: new Date()
       }}
       />
 
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor='body'>
+        <FieldContainer>
+          <label htmlFor='circle'>
           Circle:
           </label>
           <select
-            className='w-100'
+            id='circle'
+            className='w-100 pa2'
             value={circleUrl}
             onChange={e => setCircleUrl(e.target.value)}
             required
@@ -77,21 +79,24 @@ export default function NewPost (props) {
               <option value={circle.url} key={circle.url}>{circle.name}</option>
             ))}
           </select>
-        </div>
-        <div>
+        </FieldContainer>
+        <FieldContainer>
           <label htmlFor='body'>
           Post body:
           </label>
           <textarea
-            className='w-100'
+            className='w-100 pa2'
             id='body'
             value={body}
             onChange={e => setBody(e.target.value)}
           />
-          <div>
-            <button type='submit'>Create post</button>
-          </div>
-        </div>
+        </FieldContainer>
+        <FieldContainer>
+          <Button classes='hover-bg-washed-blue' type='submit'>
+            Create post
+          </Button>
+        </FieldContainer>
+
       </form>
     </div>
   )

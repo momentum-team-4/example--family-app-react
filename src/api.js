@@ -1,4 +1,31 @@
 import axios from 'axios'
+import { useState, useEffect } from 'react'
+
+export function useRemoteData (apiPromise, config = {}) {
+  let { dependencies, initialData } = config
+  if (dependencies === undefined) {
+    dependencies = []
+  }
+
+  const [data, setData] = useState(initialData)
+  const [error, setError] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    setLoading(true)
+    apiPromise()
+      .then(data => {
+        setData(data)
+        setLoading(false)
+      })
+      .catch(error => {
+        setError(error)
+        setLoading(false)
+      })
+  }, dependencies)
+
+  return [data, error, loading]
+}
 
 export function login (email, password) {
   return axios.post('http://127.0.0.1:8000/auth/token/login/', {
