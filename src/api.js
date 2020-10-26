@@ -10,8 +10,7 @@ export function useRemoteData (apiPromise, config = {}) {
   const [data, setData] = useState(initialData)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
+  const loadingFn = () => {
     setLoading(true)
     apiPromise()
       .then(data => {
@@ -22,9 +21,10 @@ export function useRemoteData (apiPromise, config = {}) {
         setError(error)
         setLoading(false)
       })
-  }, dependencies)
+  }
+  useEffect(loadingFn, dependencies)
 
-  return [data, error, loading]
+  return [data, error, loading, loadingFn]
 }
 
 export function login (email, password) {
@@ -73,6 +73,16 @@ export function createPost (token, body, circle) {
   return axios.post('http://127.0.0.1:8000/posts/', {
     body: body,
     circle: circle
+  }, {
+    headers: {
+      Authorization: 'Token ' + token
+    }
+  }).then(res => res.data)
+}
+
+export function createCircle (token, name) {
+  return axios.post('http://127.0.0.1:8000/circles/', {
+    name: name
   }, {
     headers: {
       Authorization: 'Token ' + token

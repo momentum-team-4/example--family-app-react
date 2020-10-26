@@ -27,9 +27,6 @@ export default function Posts (props) {
 
   return (
     <div className='Posts'>
-      <div>
-        <Link className='mv2' to='/new-post/'>Create a new post</Link>
-      </div>
       {posts.map(post => (
         <Post key={post.url} post={post} />
       ))}

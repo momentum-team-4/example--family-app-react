@@ -31,3 +31,9 @@ input {
   margin: 1rem auto;
   padding: 1rem;
 }
+
+a.active {
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+}

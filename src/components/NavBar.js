@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import circleImg from '../img/circles.svg'
 
 export default function NavBar (props) {
@@ -31,6 +31,17 @@ export default function NavBar (props) {
                   </span>)
             }
           </div>
+        </div>
+      </div>
+      <div className='flex mb3'>
+        <div className='mr2'>
+          <NavLink exact to='/'>All posts</NavLink>
+        </div>
+        <div className='mr2'>
+          <NavLink to='/new-post/'>Create a new post</NavLink>
+        </div>
+        <div className='mr2'>
+          <NavLink to='/circles/'>My circles</NavLink>
         </div>
       </div>
     </header>

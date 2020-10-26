@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import 'tachyons'
 import { getUserInfo, useRemoteData } from './api'
+import CircleList from './components/CircleList'
 import Home from './components/Home'
 import Login from './components/Login'
 import Logout from './components/Logout'
@@ -53,6 +54,9 @@ function App () {
           </Route>
           <Route path='/new-post/'>
             <NewPost authToken={authToken} userInfo={userInfo || {}} />
+          </Route>
+          <Route path='/circles/'>
+            <CircleList authToken={authToken} />
           </Route>
           <Route path='/'>
             <Home authToken={authToken} />
