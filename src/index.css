@@ -12,7 +12,8 @@ code {
   font-family: monospace;
 }
 
-input, label {
+input,
+label {
   display: block;
   width: 100%;
 }

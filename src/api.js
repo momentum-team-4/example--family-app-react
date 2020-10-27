@@ -35,6 +35,15 @@ export function login (email, password) {
     .then(res => res.data)
 }
 
+export function getWithAuth (token, url) {
+  return axios.get(url, {
+    headers: {
+      Authorization: 'Token ' + token
+    }
+  })
+    .then(res => res.data)
+}
+
 export function getUserInfo (token) {
   return axios.get('http://127.0.0.1:8000/auth/users/me/', {
     headers: {

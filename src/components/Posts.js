@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { getPosts, useRemoteData } from '../api'
+import { getPosts, getWithAuth } from '../api'
 import Post from './Post'
+import InfiniteScroll from 'react-infinite-scroller'
 
 export default function Posts (props) {
   /*
@@ -12,41 +13,53 @@ export default function Posts (props) {
 
   const { authToken } = props
 
-  // const [posts, setPosts] = useState(null)
-  // const [postsErr, setPostsErr] = useState(null)
-  // const [postsLoading, setPostsLoading] = useState(true)
+  const [posts, setPosts] = useState([])
+  const [nextUrl, setNextUrl] = useState(null)
+  const [postsErr, setPostsErr] = useState(null)
+  const [postsLoading, setPostsLoading] = useState(true)
 
-  // useEffect(() => {
-  //   setPostsLoading(true)
-  //   getPosts(authToken)
-  //     .then(posts => {
-  //       setPosts(posts)
-  //       setPostsLoading(false)
-  //     })
-  //     .catch(error => {
-  //       setPostsErr(error)
-  //       setPostsLoading(false)
-  //     })
-  // }, [authToken])
-
-  const [posts, postsErr, postsLoading] = useRemoteData(
-    () => getPosts(authToken),
-    { dependencies: [authToken] }
-  )
-
-  if (postsLoading) {
-    return <p>Loading...</p>
+  function getMorePosts () {
+    if (nextUrl && !postsLoading) {
+      setPostsLoading(true)
+      getWithAuth(authToken, nextUrl).then(addPosts).catch(handleError)
+    }
   }
 
-  if (postsErr) {
-    return <p>There was an error loading your posts.</p>
+  function addPosts (data) {
+    setPosts(posts.concat(data.results))
+    setNextUrl(data.next)
+    setPostsLoading(false)
   }
+
+  function handleError (error) {
+    console.log({ error })
+    setPostsErr(error)
+    setNextUrl(null)
+    setPostsLoading(false)
+  }
+
+  useEffect(() => {
+    setPostsLoading(true)
+    getPosts(authToken)
+      .then(addPosts)
+      .catch(handleError)
+  }, [authToken])
 
   return (
     <div className='Posts'>
-      {posts.map(post => (
-        <Post key={post.url} post={post} />
-      ))}
+      <InfiniteScroll
+        initialLoad={false}
+        loadMore={getMorePosts}
+        hasMore={nextUrl}
+        loader={<p key={0}>Loading...</p>}
+      >
+        {posts.map(post => (
+          <Post key={post.url} post={post} />
+        ))}
+      </InfiniteScroll>
+      {postsErr && (
+        <p>There was an error loading your posts.</p>
+      )}
     </div>
   )
 }
