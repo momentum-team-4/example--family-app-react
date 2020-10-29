@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Redirect } from 'react-router-dom'
 import { login } from '../api'
 
-export default function Login (props) {
+export default function LoginPage (props) {
   const { authToken, onLogin } = props
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -66,7 +66,7 @@ export default function Login (props) {
   )
 }
 
-Login.propTypes = {
+LoginPage.propTypes = {
   authToken: PropTypes.string.isRequired,
   onLogin: PropTypes.func.isRequired
 }

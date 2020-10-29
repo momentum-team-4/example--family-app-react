@@ -11,7 +11,7 @@ export default function Posts (props) {
   - displaying all posts
   */
 
-  const { authToken } = props
+  const { authToken, circlePk } = props
 
   const [posts, setPosts] = useState([])
   const [nextUrl, setNextUrl] = useState(null)
@@ -32,7 +32,6 @@ export default function Posts (props) {
   }
 
   function handleError (error) {
-    console.log({ error })
     setPostsErr(error)
     setNextUrl(null)
     setPostsLoading(false)
@@ -40,17 +39,17 @@ export default function Posts (props) {
 
   useEffect(() => {
     setPostsLoading(true)
-    getPosts(authToken)
+    getPosts(authToken, circlePk)
       .then(addPosts)
       .catch(handleError)
-  }, [authToken])
+  }, [authToken, circlePk]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className='Posts'>
       <InfiniteScroll
         initialLoad={false}
         loadMore={getMorePosts}
-        hasMore={nextUrl}
+        hasMore={!!nextUrl}
         loader={<p key={0}>Loading...</p>}
       >
         {posts.map(post => (

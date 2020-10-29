@@ -1,6 +1,10 @@
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 
+const client = axios.create({
+  baseURL: 'http://127.0.0.1:8000'
+})
+
 export function useRemoteData (apiPromiseFn, config = {}) {
   let { dependencies, initialData } = config
   if (dependencies === undefined) {
@@ -28,7 +32,7 @@ export function useRemoteData (apiPromiseFn, config = {}) {
 }
 
 export function login (email, password) {
-  return axios.post('http://127.0.0.1:8000/auth/token/login/', {
+  return client.post('/auth/token/login/', {
     email: email,
     password: password
   })
@@ -36,7 +40,7 @@ export function login (email, password) {
 }
 
 export function getWithAuth (token, url) {
-  return axios.get(url, {
+  return client.get(url, {
     headers: {
       Authorization: 'Token ' + token
     }
@@ -45,16 +49,7 @@ export function getWithAuth (token, url) {
 }
 
 export function getUserInfo (token) {
-  return axios.get('http://127.0.0.1:8000/auth/users/me/', {
-    headers: {
-      Authorization: 'Token ' + token
-    }
-  })
-    .then(res => res.data)
-}
-
-export function getExampleData (token) {
-  return axios.get('http://127.0.0.1:8000/example/', {
+  return client.get('/auth/users/me/', {
     headers: {
       Authorization: 'Token ' + token
     }
@@ -63,15 +58,27 @@ export function getExampleData (token) {
 }
 
 export function getCircles (token) {
-  return axios.get('http://127.0.0.1:8000/circles/', {
+  return client.get('/circles/', {
     headers: {
       Authorization: 'Token ' + token
     }
   }).then(res => res.data)
 }
 
-export function getPosts (token) {
-  return axios.get('http://127.0.0.1:8000/posts/', {
+export function getCircle (token, pk) {
+  return client.get(`/circles/${pk}/`, {
+    headers: {
+      Authorization: 'Token ' + token
+    }
+  }).then(res => res.data)
+}
+
+export function getPosts (token, circlePk) {
+  let url = '/posts/'
+  if (circlePk) {
+    url += '?circle=' + circlePk
+  }
+  return client.get(url, {
     headers: {
       Authorization: 'Token ' + token
     }
@@ -79,7 +86,7 @@ export function getPosts (token) {
 }
 
 export function createPost (token, body, circle) {
-  return axios.post('http://127.0.0.1:8000/posts/', {
+  return client.post('/posts/', {
     body: body,
     circle: circle
   }, {
@@ -90,7 +97,7 @@ export function createPost (token, body, circle) {
 }
 
 export function createCircle (token, name) {
-  return axios.post('http://127.0.0.1:8000/circles/', {
+  return client.post('/circles/', {
     name: name
   }, {
     headers: {
@@ -100,7 +107,7 @@ export function createCircle (token, name) {
 }
 
 export function addImageToPost (token, postUrl, image) {
-  return axios.put(postUrl + 'image/', image, {
+  return client.put(postUrl + 'image/', image, {
     headers: {
       Authorization: 'Token ' + token,
       'Content-Type': image.type,

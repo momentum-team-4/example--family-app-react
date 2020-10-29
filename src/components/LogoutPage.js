@@ -2,11 +2,11 @@ import React from 'react'
 import { Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
-export default function Logout (props) {
+export default function LogoutPage (props) {
   props.setAuthToken(null)
   return <Redirect to='/' />
 }
 
-Logout.propTypes = {
+LogoutPage.propTypes = {
   setAuthToken: PropTypes.func.isRequired
 }

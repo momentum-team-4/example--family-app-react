@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Posts from './Posts'
 
-export default function Home (props) {
+export default function HomePage (props) {
   const { authToken } = props
 
   return (
@@ -12,6 +12,6 @@ export default function Home (props) {
   )
 }
 
-Home.propTypes = {
+HomePage.propTypes = {
   authToken: PropTypes.string.isRequired
 }

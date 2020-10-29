@@ -41,7 +41,7 @@ export default function NavBar (props) {
           <NavLink to='/new-post/'>Create a new post</NavLink>
         </div>
         <div className='mr2'>
-          <NavLink to='/circles/'>My circles</NavLink>
+          <NavLink exact to='/circles/'>My circles</NavLink>
         </div>
       </div>
     </header>

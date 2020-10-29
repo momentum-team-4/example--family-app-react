@@ -2,12 +2,13 @@ import React, { useState } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import 'tachyons'
 import { getUserInfo, useRemoteData } from './api'
-import CircleList from './components/CircleList'
-import Home from './components/Home'
-import Login from './components/Login'
-import Logout from './components/Logout'
+import CirclePage from './components/CirclePage'
+import CircleListPage from './components/CircleListPage'
+import HomePage from './components/HomePage'
+import LoginPage from './components/LoginPage'
+import LogoutPage from './components/LogoutPage'
 import NavBar from './components/NavBar'
-import NewPost from './components/NewPost'
+import NewPostPage from './components/NewPostPage'
 
 function App () {
   /*
@@ -45,22 +46,25 @@ function App () {
 
         <Switch>
           <Route path='/login/'>
-            <Login authToken={authToken} onLogin={setAuthToken} />
+            <LoginPage authToken={authToken} onLogin={setAuthToken} />
           </Route>
           <Route path='/logout/'>
-            <Logout setAuthToken={setAuthToken} />
+            <LogoutPage setAuthToken={setAuthToken} />
           </Route>
           <Route path='/register/'>
             <p>Registration form</p>
           </Route>
           <Route path='/new-post/'>
-            <NewPost authToken={authToken} userInfo={userInfo || {}} />
+            <NewPostPage authToken={authToken} userInfo={userInfo || {}} />
+          </Route>
+          <Route path='/circles/:pk/'>
+            <CirclePage authToken={authToken} />
           </Route>
           <Route path='/circles/'>
-            <CircleList authToken={authToken} />
+            <CircleListPage authToken={authToken} />
           </Route>
           <Route path='/'>
-            <Home authToken={authToken} />
+            <HomePage authToken={authToken} />
           </Route>
         </Switch>
       </div>

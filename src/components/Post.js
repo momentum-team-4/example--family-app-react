@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { parse, format } from 'fecha'
+import { Link } from 'react-router-dom'
 
 export default function Post ({ post }) {
   /*
@@ -19,7 +20,7 @@ export default function Post ({ post }) {
         <span className='f6'>{postedAt}</span>
       </div>
       <div className='mb2'>
-        <i>{post.circle.name}</i>
+        <Link to={`/circles/${post.circle.pk}`}><i>{post.circle.name}</i></Link>
       </div>
       <div className='mv2'>{post.body}</div>
       {post.image && (

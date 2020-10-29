@@ -5,7 +5,7 @@ import { createPost, getCircles, useRemoteData, addImageToPost } from '../api'
 import { Button, FieldContainer } from './Forms'
 import Post from './Post'
 
-export default function NewPost (props) {
+export default function NewPostPage (props) {
   /*
   Form for creating a new post
   */
@@ -112,7 +112,7 @@ export default function NewPost (props) {
   )
 }
 
-NewPost.propTypes = {
+NewPostPage.propTypes = {
   authToken: PropTypes.string.isRequired,
   userInfo: PropTypes.shape({
     name: PropTypes.string

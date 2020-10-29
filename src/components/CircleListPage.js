@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { createCircle, getCircles, useRemoteData } from '../api'
 import { Button, FieldContainer } from './Forms'
+import { Link } from 'react-router-dom'
 
-export default function CircleList (props) {
+export default function CircleListPage (props) {
   /*
   Responsible for showing list of circles
   */
@@ -41,7 +42,7 @@ export default function CircleList (props) {
       <div className='pb3'>
         {circles.map(circle => (
           <div key={circle.url} className='ba bw1 pa2 mb2'>
-            <div className='f3 b mb2'>{circle.name}</div>
+            <div className='f3 b mb2'><Link to={`/circles/${circle.pk}/`}>{circle.name}</Link></div>
             <div>{circle.members.join(', ')}</div>
           </div>
         ))}
@@ -61,6 +62,6 @@ export default function CircleList (props) {
   )
 }
 
-CircleList.propTypes = {
+CircleListPage.propTypes = {
   authToken: PropTypes.string.isRequired
 }

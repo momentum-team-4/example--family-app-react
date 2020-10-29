@@ -16,3 +16,7 @@ export const Button = ({ children, classes, ...props }) => {
     </button>
   )
 }
+
+export function handleChange (setFn) {
+  return (e) => setFn(e.target.value)
+}

@@ -13,7 +13,8 @@ code {
 }
 
 input,
-label {
+label,
+select {
   display: block;
   width: 100%;
 }
@@ -22,7 +23,8 @@ label {
   margin: 0.5rem 0;
 }
 
-input {
+input,
+select {
   margin: 0.5rem 0;
   padding: 0.25rem;
 }
